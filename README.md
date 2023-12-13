@@ -35,7 +35,7 @@ recommended that `GOPATH` is set to a directory in your home directory such as
 - To simply build the binary, without installing it, the following command should suffice:
 
 ```bash
-$ git clone https://btcdemoppc/ppcd && cd ppcd
+$ git clone https://github.com/PutinCoinPUT/ppcd.git && cd ppcd
 $ go build
 # run it using ./ppcd
 ```
