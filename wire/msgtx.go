@@ -11,7 +11,7 @@ import (
 	"io"
 	"strconv"
 	"strings"
-	// "time"
+	"time"
 
 	"github.com/PutinCoinPUT/ppcd/chaincfg/chainhash"
 )
@@ -341,7 +341,7 @@ func NewTxOut(value int64, pkScript []byte) *TxOut {
 // inputs and outputs.
 type MsgTx struct {
 	Version   int32
-	Timestamp int64 // time.Time
+	Timestamp time.Time
 	TxIn      []*TxIn
 	TxOut     []*TxOut
 	LockTime  uint32
@@ -475,9 +475,9 @@ func (msg *MsgTx) BtcDecode(r io.Reader, pver uint32, enc MessageEncoding) error
 		if err != nil {
 			return err
 		}
-		msg.Timestamp = int64(timestamp)
+		msg.Timestamp = time.Unix(int64(timestamp), 0)
 	} else {
-		msg.Timestamp = 0
+		msg.Timestamp = time.Unix(0, 0)
 	}
 
 	count, err := ReadVarInt(r, pver)
@@ -751,12 +751,12 @@ func (msg *MsgTx) BtcEncode(w io.Writer, pver uint32, enc MessageEncoding) error
 		return err
 	}
 
-	// if msg.Version < 3 {
-	//	err = binarySerializer.PutUint32(w, littleEndian)
-	//	if err != nil {
-	//		return err
-	//	}
-	// }
+	if msg.Version < 3 {
+		err = binarySerializer.PutUint32(w, littleEndian, uint32(msg.Timestamp.Unix()))
+		if err != nil {
+			return err
+		}
+	}
 
 	// If the encoding version is set to WitnessEncoding, and the Flags
 	// field for the MsgTx aren't 0x00, then this indicates the transaction
@@ -960,10 +960,10 @@ func (msg *MsgTx) PkScriptLocs() []int {
 // are no transaction inputs or outputs.  Also, the lock time is set to zero
 // to indicate the transaction is valid immediately as opposed to some time in
 // future.
-func NewMsgTx(version int32, timestmp int64) *MsgTx {
+func NewMsgTx(version int32) *MsgTx {
 	return &MsgTx{
 		Version:   version,
-		Timestamp: timestmp, // time.Unix(0, 0) peercoin: timestamp should be set manually
+		Timestamp: time.Unix(0, 0), // peercoin: timestamp should be set manually
 		TxIn:      make([]*TxIn, 0, defaultTxInOutAlloc),
 		TxOut:     make([]*TxOut, 0, defaultTxInOutAlloc),
 	}
