@@ -11,7 +11,7 @@ import (
 	"io"
 	"strconv"
 	"strings"
-	"time"
+	// "time"
 
 	"github.com/PutinCoinPUT/ppcd/chaincfg/chainhash"
 )
@@ -751,12 +751,12 @@ func (msg *MsgTx) BtcEncode(w io.Writer, pver uint32, enc MessageEncoding) error
 		return err
 	}
 
-	if msg.Version < 3 {
-		err = binarySerializer.PutUint32(w, littleEndian)
-		if err != nil {
-			return err
-		}
-	}
+	// if msg.Version < 3 {
+	//	err = binarySerializer.PutUint32(w, littleEndian)
+	//	if err != nil {
+	//		return err
+	//	}
+	// }
 
 	// If the encoding version is set to WitnessEncoding, and the Flags
 	// field for the MsgTx aren't 0x00, then this indicates the transaction
