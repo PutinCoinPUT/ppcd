@@ -475,9 +475,9 @@ func (msg *MsgTx) BtcDecode(r io.Reader, pver uint32, enc MessageEncoding) error
 		if err != nil {
 			return err
 		}
-		msg.Timestamp = time.Unix(int64(timestamp), 0)
+		msg.Timestamp = int64(timestamp)
 	} else {
-		msg.Timestamp = time.Unix(0, 0)
+		msg.Timestamp = 0
 	}
 
 	count, err := ReadVarInt(r, pver)
@@ -752,7 +752,7 @@ func (msg *MsgTx) BtcEncode(w io.Writer, pver uint32, enc MessageEncoding) error
 	}
 
 	if msg.Version < 3 {
-		err = binarySerializer.PutUint32(w, littleEndian, uint32(msg.Timestamp.Unix()))
+		err = binarySerializer.PutUint32(w, littleEndian)
 		if err != nil {
 			return err
 		}
