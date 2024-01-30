@@ -963,7 +963,7 @@ func (msg *MsgTx) PkScriptLocs() []int {
 func NewMsgTx(version int32) *MsgTx {
 	return &MsgTx{
 		Version:   version,
-		Timestamp: time.Unix(0, 0), // peercoin: timestamp should be set manually
+		Timestamp: time.Now().Unix(), // time.Unix(0, 0) peercoin: timestamp should be set manually
 		TxIn:      make([]*TxIn, 0, defaultTxInOutAlloc),
 		TxOut:     make([]*TxOut, 0, defaultTxInOutAlloc),
 	}
