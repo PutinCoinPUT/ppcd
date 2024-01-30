@@ -341,7 +341,7 @@ func NewTxOut(value int64, pkScript []byte) *TxOut {
 // inputs and outputs.
 type MsgTx struct {
 	Version   int32
-	Timestamp time.Time
+	Timestamp int64 // time.Time
 	TxIn      []*TxIn
 	TxOut     []*TxOut
 	LockTime  uint32
