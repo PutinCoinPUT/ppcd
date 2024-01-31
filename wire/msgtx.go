@@ -960,10 +960,10 @@ func (msg *MsgTx) PkScriptLocs() []int {
 // are no transaction inputs or outputs.  Also, the lock time is set to zero
 // to indicate the transaction is valid immediately as opposed to some time in
 // future.
-func NewMsgTx(version int32, timestmp time.Time) *MsgTx {
+func NewMsgTx(version int32, timestmp int64) *MsgTx {
 	return &MsgTx{
 		Version:   version,
-		Timestamp: timestmp, // time.Unix(0, 0) peercoin: timestamp should be set manually
+		Timestamp: time.Unix(int64(timestmp), 0), // time.Unix(0, 0) peercoin: timestamp should be set manually
 		TxIn:      make([]*TxIn, 0, defaultTxInOutAlloc),
 		TxOut:     make([]*TxOut, 0, defaultTxInOutAlloc),
 	}
